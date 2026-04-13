@@ -217,6 +217,13 @@ body {
 .flip-card.flipping .flip-bottom {
     animation: flipBottom 0.4s cubic-bezier(0.0, 0.5, 0.5, 1) 0.4s forwards;
 }
+.ms-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #303030 0%, #050505 100%);
+    color: #e0e0e0;
+}
 
 /* Base adjustment */
 .huge-countdown { margin: 40px 0; }

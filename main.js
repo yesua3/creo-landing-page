@@ -209,6 +209,22 @@ document.addEventListener('DOMContentLoaded', () => {
         flipUnit(container.querySelector('[data-time="secs"]'), s < 10 ? '0' + s : String(s));
     }
 
+    function updateMsElements() {
+        const now = new Date().getTime();
+        const gap = countdownDate.getTime() - now;
+        
+        let msVal = '00';
+        if (gap > 0) {
+            const ms = Math.floor((gap % 1000) / 10);
+            msVal = ms < 10 ? '0' + ms : String(ms);
+        }
+        
+        const hMs = dfH?.querySelector('.ms-card');
+        const sMs = dfS?.querySelector('.ms-card');
+        if (hMs) hMs.innerText = msVal;
+        if (sMs) sMs.innerText = msVal;
+    }
+
     function countdown() {
         const now = new Date().getTime();
         const gap = countdownDate.getTime() - now;
@@ -233,5 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTimeElements(dfS, d, h, m, s);
     }
     setInterval(countdown, 1000);
+    setInterval(updateMsElements, 30);
     countdown();
+    updateMsElements();
 });
