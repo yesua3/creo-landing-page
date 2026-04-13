@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fundación CREO - Cambiando vidas poco a poco. Regalamos dinero real a personas reales cada 15 días.">
+    <title>CREO - Cambiando vidas poco a poco</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="stars-container"></div>
+    
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="nav-content">
+            <div class="logo">CREO<span class="text-red">.</span></div>
+            <!-- Desktop Menu -->
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="#hero" class="nav-link">Inicio</a></li>
+                    <li><a href="#sorteo" class="nav-link">Sorteo</a></li>
+                    <li><a href="#como-funciona" class="nav-link">Instrucciones</a></li>
+                    <li><a href="#ganadores" class="nav-link">Ganadores</a></li>
+                </ul>
+            </nav>
+            <!-- Mobile Menu Toggle -->
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <!-- Mobile Nav Menu -->
+        <div class="mobile-nav">
+            <ul>
+                <li><a href="#hero" class="nav-link mobile-link">Inicio</a></li>
+                <li><a href="#sorteo" class="nav-link mobile-link">Sorteo</a></li>
+                <li><a href="#como-funciona" class="nav-link mobile-link">Instrucciones</a></li>
+                <li><a href="#ganadores" class="nav-link mobile-link">Ganadores</a></li>
+                <li><a href="https://www.instagram.com/creo.nt/" target="_blank" class="nav-link mobile-link" style="color: var(--accent-red)">Instagram</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. HERO -->
+        <section class="hero" id="hero">
+            <!-- Absolute floating people -->
+            <img src="assets/person1.png" alt="Mujer" class="hero-person floating-person-woman parallax-layer" data-speed="0.2">
+            <img src="assets/person3.png" alt="Niña" class="hero-person floating-person-girl parallax-layer" data-speed="0.18">
+            
+            <img src="assets/person2.png" alt="Hombre" class="hero-person floating-person-man parallax-layer" data-speed="0.3">
+            <img src="assets/person3.png" alt="Niño" class="hero-person floating-person-child parallax-layer" data-speed="0.15">
+            
+            <div class="container hero-layout relative-z">
+                <!-- Center/Left Content -->
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="red-dot"></span> CAMBIANDO VIDAS POCO A POCO
+                    </div>
+                    <h1 class="hero-title">
+                        PROYECTO<br><span class="text-red">CREO</span>
+                    </h1>
+                    <p class="hero-desc">
+                        Dinero real a personas reales cada 2 semanas.<br>
+                        Ganadores reales. Próximo sorteo en…
+                    </p>
+                    
+                    <!-- Countdown Hero -->
+                    <div class="countdown-container flip-clock" id="hero-countdown">
+                        <div class="flip-unit" data-time="days">
+                            <div class="flip-card">
+                                <div class="top"></div><div class="bottom"></div>
+                                <div class="flip-top"></div><div class="flip-bottom"></div>
+                            </div>
+                            <span class="label">DÍAS</span>
+                        </div>
+                        <div class="flip-unit" data-time="hours">
+                            <div class="flip-card">
+                                <div class="top"></div><div class="bottom"></div>
+                                <div class="flip-top"></div><div class="flip-bottom"></div>
+                            </div>
+                            <span class="label">HRS</span>
+                        </div>
+                        <div class="flip-unit" data-time="mins">
+                            <div class="flip-card">
+                                <div class="top"></div><div class="bottom"></div>
+                                <div class="flip-top"></div><div class="flip-bottom"></div>
+                            </div>
+                            <span class="label">MIN</span>
+                        </div>
+                        <div class="flip-unit" data-time="secs">
+                            <div class="flip-card">
+                                <div class="top"></div><div class="bottom"></div>
+                                <div class="flip-top"></div><div class="flip-bottom"></div>
+                            </div>
+                            <span class="label">SEG</span>
+                        </div>
+                    </div>
+
+                    <a href="https://www.instagram.com/creo.nt/" target="_blank" class="btn-solid-red">Participa es gratis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SECCIÓN EMOCIONAL -->
+        <section class="emotional reveal">
+            <div class="container text-center inverted-triangle">
+                <p class="fade-text line-1">CREO nace con una idea simple: dar oportunidades reales a personas reales.</p>
+                <p class="highlight line-2">A veces un pequeño apoyo puede cambiar un día... o incluso una vida.</p>
+                <p class="fade-text line-3">Aquí no se trata solo de dinero... se trata de creer en la gente.</p>
+            </div>
+        </section>
+
+        <!-- 3. SORTEO ACTUAL -->
+        <section class="raffle reveal" id="sorteo">
+            <div class="container text-center raffle-container">
+                <h2 class="massive-title uppercase">GRAN SORTEO</h2>
+                <p class="raffle-subtitle">Próximo sorteo en…</p>
+
+                <!-- Huge Countdown Sorteo -->
+                <div class="countdown-container huge-countdown flip-clock" id="sorteo-countdown">
+                    <div class="flip-unit" data-time="days">
+                        <div class="flip-card">
+                            <div class="top"></div><div class="bottom"></div>
+                            <div class="flip-top"></div><div class="flip-bottom"></div>
+                        </div>
+                        <span class="label">DÍAS</span>
+                    </div>
+                    <div class="flip-unit" data-time="hours">
+                        <div class="flip-card">
+                            <div class="top"></div><div class="bottom"></div>
+                            <div class="flip-top"></div><div class="flip-bottom"></div>
+                        </div>
+                        <span class="label">HRS</span>
+                    </div>
+                    <div class="flip-unit" data-time="mins">
+                        <div class="flip-card">
+                            <div class="top"></div><div class="bottom"></div>
+                            <div class="flip-top"></div><div class="flip-bottom"></div>
+                        </div>
+                        <span class="label">MIN</span>
+                    </div>
+                    <div class="flip-unit" data-time="secs">
+                        <div class="flip-card">
+                            <div class="top"></div><div class="bottom"></div>
+                            <div class="flip-top"></div><div class="flip-bottom"></div>
+                        </div>
+                        <span class="label">SEG</span>
+                    </div>
+                </div>
+
+                <div class="badge-outline">
+                    <span class="red-icon">👥</span> PREMIO: RD$500 PARA EL PRÓXIMO GANADOR
+                </div>
+
+                <div class="raffle-poster flex-card framed-tech-box">
+                    <div class="poster-img-container">
+                        <!-- Space graphic here just for the poster section background -->
+                        <img src="assets/planet.png" class="poster-planet">
+                    </div>
+                    <div class="poster-details">
+                        <h3 class="poster-title">REGÍSTRATE DESDE INSTAGRAM</h3>
+                        <p class="poster-desc">Pasos a seguir:</p>
+                        <ul class="poster-steps">
+                            <li><span class="text-red">1.</span> Sigue nuestra cuenta @creo.nt</li>
+                            <li><span class="text-red">2.</span> Dale like al post</li>
+                            <li><span class="text-red">3.</span> Comenta y etiqueta a alguien</li>
+                        </ul>
+                        <br>
+                        <a href="https://www.instagram.com/creo.nt/" target="_blank" class="btn-outline-red w-full">Participa ahora gratis</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. CÓMO FUNCIONA -->
+        <section class="how-it-works reveal" id="como-funciona">
+            <div class="container">
+                <h2 class="section-title medium-title text-center text-red">¿CÓMO FUNCIONA?</h2>
+                <div class="steps-grid">
+                    <div class="step-card framed-tech-box step-tech">
+                        <div class="step-num">01</div>
+                        <p>Participas desde <span class="text-red">Instagram</span></p>
+                    </div>
+                    <div class="step-card framed-tech-box step-tech">
+                        <div class="step-num">02</div>
+                        <p>Se registran todos<br>los participantes</p>
+                    </div>
+                    <div class="step-card framed-tech-box step-tech">
+                        <div class="step-num">03</div>
+                        <p>Elegimos un<br>ganador al azar</p>
+                    </div>
+                    <div class="step-card framed-tech-box step-tech">
+                        <div class="step-num">04</div>
+                        <p>Anunciamos públicamente</p>
+                    </div>
+                </div>
+                <p class="closing-statement text-red text-center">Simple. Transparente. Real.</p>
+            </div>
+        </section>
+
+        <!-- 5. GANADORES -->
+        <section class="winners reveal" id="ganadores">
+            <div class="container text-center">
+                <h2 class="section-title medium-title text-red">GANADORES REALES</h2>
+                <p class="section-desc">Cada sorteo tiene un ganador real. Aquí mostramos a las personas que ya han ganado.</p>
+                
+                <div class="carousel-container">
+                    <button class="carousel-control prev" aria-label="Anterior">⟨</button>
+                    <div class="carousel-track-wrapper">
+                        <div class="carousel-track" id="winners-carousel-track">
+                            <!-- Duplicate items will be managed by Javascript for infinite DOM loop -->
+                            <div class="winner-card glass-card">
+                                <div class="img-wrapper">
+                                    <img src="assets/winner.png" alt="Ganador">
+                                </div>
+                                <div class="winner-info text-left">
+                                    <h4>Marlenis Santos</h4>
+                                    <p class="history">"Nunca pensé que sería yo, pude comprar despensa para mi familia esta semana. Gracias CREO."</p>
+                                    <span class="badge">#Ganadora</span>
+                                </div>
+                            </div>
+                            <div class="winner-card glass-card">
+                                <div class="img-wrapper">
+                                    <img src="assets/winner.png" alt="Ganador" style="filter: hue-rotate(45deg);">
+                                </div>
+                                <div class="winner-info text-left">
+                                    <h4>José Pérez</h4>
+                                    <p class="history">"Tenía que comprar un medicamento y me faltaba dinero. Este fue un apoyo que me salvó el día."</p>
+                                    <span class="badge">#Ganador</span>
+                                </div>
+                            </div>
+                            <div class="winner-card glass-card">
+                                <div class="img-wrapper">
+                                    <img src="assets/winner.png" alt="Ganador" style="filter: hue-rotate(-90deg);">
+                                </div>
+                                <div class="winner-info text-left">
+                                    <h4>Ana López</h4>
+                                    <p class="history">"Un gran alivio poder contar con proyectos reales y honestos como CREO. 100% real."</p>
+                                    <span class="badge">#Ganadora</span>
+                                </div>
+                            </div>
+                            <div class="winner-card glass-card">
+                                <div class="img-wrapper">
+                                    <img src="assets/winner.png" alt="Ganador" style="filter: hue-rotate(180deg);">
+                                </div>
+                                <div class="winner-info text-left">
+                                    <h4>Carlos Castillo</h4>
+                                    <p class="history">"Estaba pasando por un mal momento y este premio me vino en el momento perfecto."</p>
+                                    <span class="badge">#Ganador</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control next" aria-label="Siguiente">⟩</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CTA FINAL -->
+        <section class="cta-final reveal text-center">
+            <div class="container">
+                <h2 class="huge-title">¿Y si el próximo eres tú?</h2>
+                <a href="https://www.instagram.com/creo.nt/" target="_blank" class="btn-solid-red xl">
+                    Participar gratis
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 7. FOOTER -->
+    <footer>
+        <div class="container text-center">
+            <div class="footer-logo">CREO<span class="text-red">.</span></div>
+            
+            <div class="footer-links">
+                <a href="https://www.instagram.com/creo.nt/" target="_blank" class="footer-ig-link text-red">
+                    <svg xmlns="http://www.w3.org/-2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ig-icon">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                    @creo.nt
+                </a>
+            </div>
+            
+            <div class="footer-disclaimers">
+                <p class="disclaimer">Este proyecto no está afiliado a Instagram. Los ganadores se eligen de forma aleatoria.</p>
+                <p class="disclaimer">© 2026 CREO. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
