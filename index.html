@@ -166,7 +166,7 @@
                 </div>
 
                 <div class="badge-outline">
-                    <span class="red-icon">👥</span> PREMIO: RD$500 PARA EL PRÓXIMO GANADOR
+                    <span class="red-icon">👥</span> <span id="premio-text">PREMIO: POR CONFIRMAR</span>
                 </div>
 
                 <div class="raffle-poster flex-card framed-tech-box">
@@ -174,16 +174,21 @@
                         <!-- Space graphic here just for the poster section background -->
                         <img src="assets/planet.png" class="poster-planet">
                     </div>
-                    <div class="poster-details">
-                        <h3 class="poster-title">REGÍSTRATE DESDE INSTAGRAM</h3>
-                        <p class="poster-desc">Pasos a seguir:</p>
-                        <ul class="poster-steps">
-                            <li><span class="text-red">1.</span> Sigue nuestra cuenta @creo.nt</li>
-                            <li><span class="text-red">2.</span> Dale like al post</li>
-                            <li><span class="text-red">3.</span> Comenta y etiqueta a alguien</li>
-                        </ul>
-                        <br>
-                        <a href="https://www.instagram.com/creo.nt/" target="_blank" class="btn-outline-red w-full">Participa ahora gratis</a>
+                    <div class="poster-details" id="registration-container">
+                        <h3 class="poster-title">REGÍSTRATE EN EL SORTEO</h3>
+                        <p class="poster-desc">Ingresa tus datos para participar:</p>
+                        <form id="registro-form" class="text-left">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display:block; color:var(--text-secondary); margin-bottom:5px;">Nombre Completo</label>
+                                <input type="text" id="reg-nombre" required style="width:100%; padding:10px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label style="display:block; color:var(--text-secondary); margin-bottom:5px;">Correo Electrónico</label>
+                                <input type="email" id="reg-email" required style="width:100%; padding:10px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                            </div>
+                            <button type="submit" id="btn-submit-reg" class="btn-outline-red w-full">Participar ahora gratis</button>
+                            <p id="reg-msg" class="text-center" style="margin-top: 15px; font-size: 0.9rem;"></p>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -305,6 +310,9 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

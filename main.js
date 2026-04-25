@@ -156,14 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // 7. Countdowns
-    let countdownDate = new Date();
-    countdownDate.setDate(countdownDate.getDate() + 12);
-    countdownDate.setHours(countdownDate.getHours() + 7);
-    countdownDate.setMinutes(countdownDate.getMinutes() + 4);
-
+    // 7. Integración Supabase - Sorteo y Contador
+    let countdownDate = null;
+    let currentSorteoId = null;
+    let countdownInterval = null;
+    let msInterval = null;
     const dfH = document.querySelector('#hero-countdown');
     const dfS = document.querySelector('#sorteo-countdown');
+    const premioText = document.getElementById('premio-text');
 
     function flipUnit(unit, newValue) {
         if (!unit) return;
@@ -184,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Cancel previous animation
         card.classList.remove('flipping');
         void card.offsetWidth;
         
@@ -210,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateMsElements() {
+        if (!countdownDate) return;
         const now = new Date().getTime();
         const gap = countdownDate.getTime() - now;
         
@@ -226,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function countdown() {
+        if (!countdownDate) return;
         const now = new Date().getTime();
         const gap = countdownDate.getTime() - now;
 
@@ -234,10 +235,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const hour = minute * 60;
         const day = hour * 24;
 
-        if (gap < 0) {
+        if (gap <= 0) {
             updateTimeElements(dfH, 0, 0, 0, 0);
             updateTimeElements(dfS, 0, 0, 0, 0);
+            document.body.classList.remove('urgent-time');
             return;
+        }
+
+        // Efecto visual menos de 10 segundos
+        if (gap <= 10000 && gap > 0) {
+            document.body.classList.add('urgent-time');
+        } else {
+            document.body.classList.remove('urgent-time');
         }
 
         const d = Math.floor(gap / day);
@@ -248,8 +257,126 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTimeElements(dfH, d, h, m, s);
         updateTimeElements(dfS, d, h, m, s);
     }
-    setInterval(countdown, 1000);
-    setInterval(updateMsElements, 30);
-    countdown();
-    updateMsElements();
+
+    function startCountdown() {
+        if(countdownInterval) clearInterval(countdownInterval);
+        if(msInterval) clearInterval(msInterval);
+
+        countdownInterval = setInterval(countdown, 1000);
+        msInterval = setInterval(updateMsElements, 30);
+        countdown();
+        updateMsElements();
+    }
+
+    async function loadActiveSorteo() {
+        try {
+            const { data, error } = await supabaseClient
+                .from('sorteos')
+                .select('*')
+                .in('estado', ['activo', 'finalizado', 'pausado'])
+                .order('created_at', { ascending: false })
+                .limit(1);
+            
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+                const sorteo = data[0];
+                currentSorteoId = sorteo.id;
+                countdownDate = new Date(sorteo.fecha_sorteo);
+                
+                if (sorteo.estado === 'activo') {
+                    if (premioText) premioText.textContent = `PREMIO: ${sorteo.premio} PARA EL PRÓXIMO GANADOR`;
+                    startCountdown();
+                } else if (sorteo.estado === 'pausado') {
+                    if (premioText) premioText.textContent = `SORTEO PAUSADO - PREMIO: ${sorteo.premio}`;
+                    startCountdown();
+                } else {
+                    if (premioText) premioText.textContent = `SORTEO FINALIZADO - PREMIO: ${sorteo.premio}`;
+                    updateTimeElements(dfH, 0, 0, 0, 0);
+                    updateTimeElements(dfS, 0, 0, 0, 0);
+                }
+                subscribeToSorteo(currentSorteoId);
+            } else {
+                if (premioText) premioText.textContent = "PRÓXIMO SORTEO POR CONFIRMAR";
+                updateTimeElements(dfH, 0, 0, 0, 0);
+                updateTimeElements(dfS, 0, 0, 0, 0);
+            }
+        } catch (err) {
+            console.error("Error cargando sorteo:", err);
+        }
+    }
+
+    function subscribeToSorteo(sorteoId) {
+        supabaseClient.channel('public-sorteos-updates')
+        .on(
+            'postgres_changes',
+            { event: 'UPDATE', schema: 'public', table: 'sorteos', filter: `id=eq.${sorteoId}` },
+            (payload) => {
+                const sorteo = payload.new;
+                countdownDate = new Date(sorteo.fecha_sorteo);
+                
+                if (sorteo.estado === 'activo') {
+                    if(premioText) premioText.textContent = `PREMIO: ${sorteo.premio} PARA EL PRÓXIMO GANADOR`;
+                    startCountdown();
+                } else if (sorteo.estado === 'pausado') {
+                    if(premioText) premioText.textContent = `SORTEO PAUSADO - PREMIO: ${sorteo.premio}`;
+                    startCountdown();
+                } else {
+                    if(premioText) premioText.textContent = `SORTEO FINALIZADO - PREMIO: ${sorteo.premio}`;
+                    updateTimeElements(dfH, 0, 0, 0, 0);
+                    updateTimeElements(dfS, 0, 0, 0, 0);
+                    if(countdownInterval) clearInterval(countdownInterval);
+                    if(msInterval) clearInterval(msInterval);
+                    document.body.classList.remove('urgent-time');
+                }
+            }
+        )
+        .subscribe();
+    }
+
+    // 8. Registro de participante
+    const registroForm = document.getElementById('registro-form');
+    const regMsg = document.getElementById('reg-msg');
+    const btnSubmitReg = document.getElementById('btn-submit-reg');
+
+    if(registroForm) {
+        registroForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentSorteoId) {
+                regMsg.textContent = "No hay un sorteo activo en este momento.";
+                regMsg.style.color = "var(--accent-red)";
+                return;
+            }
+
+            const nombre = document.getElementById('reg-nombre').value;
+            const email = document.getElementById('reg-email').value;
+
+            btnSubmitReg.textContent = "Registrando...";
+            btnSubmitReg.disabled = true;
+
+            const { data, error } = await supabaseClient.from('participantes').insert([
+                { sorteo_id: currentSorteoId, nombre: nombre, email: email }
+            ]);
+
+            btnSubmitReg.disabled = false;
+            btnSubmitReg.textContent = "Participar ahora gratis";
+
+            if (error) {
+                if (error.code === '23505') { // Unique violation code en postgres
+                    regMsg.textContent = "Este correo ya está registrado en este sorteo.";
+                } else {
+                    regMsg.textContent = "Error al registrar: Intenta de nuevo más tarde.";
+                    console.error(error);
+                }
+                regMsg.style.color = "var(--accent-red)";
+            } else {
+                regMsg.textContent = "¡Registro exitoso! Ya estás participando.";
+                regMsg.style.color = "#00ff00";
+                registroForm.reset();
+            }
+        });
+    }
+
+    // Iniciar
+    loadActiveSorteo();
 });

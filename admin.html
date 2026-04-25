@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - CREO</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .admin-container {
+            padding: 100px 5% 50px 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .admin-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        th {
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .winner-display {
+            font-size: 1.5rem;
+            color: #ff9d00;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px dashed #ff9d00;
+            border-radius: 8px;
+        }
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="stars-container"></div>
+    
+    <div class="admin-container">
+        <div class="text-center">
+            <h1 class="hero-title" style="font-size: 3rem;">PANEL <span class="text-red">ADMIN</span></h1>
+        </div>
+
+        <!-- Login Section -->
+        <div id="login-section" class="admin-card">
+            <h2 class="medium-title text-center" style="font-size: 1.5rem;">Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <p id="login-error" class="text-red hidden text-center" style="margin-bottom: 15px;"></p>
+                <button type="submit" class="btn-solid-red w-full">Ingresar</button>
+            </form>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="hidden">
+            <div class="admin-nav">
+                <div>Conectado como <span id="admin-user-email" class="text-red"></span></div>
+                <button id="btn-logout" class="btn-outline-red btn-small">Cerrar Sesión</button>
+            </div>
+
+            <!-- Configurar Sorteo -->
+            <div class="admin-card">
+                <h3 class="medium-title" style="font-size: 1.5rem; margin-bottom: 20px;">Sorteo Actual</h3>
+                
+                <div id="sorteo-status-badge" class="badge-outline" style="margin: 0 0 20px 0;">Estado: Cargando...</div>
+
+                <form id="sorteo-form">
+                    <div class="form-group">
+                        <label>Título del Sorteo</label>
+                        <input type="text" id="sorteo-titulo" required placeholder="Ej: Sorteo Quincenal CREO">
+                    </div>
+                    <div class="form-group">
+                        <label>Premio</label>
+                        <input type="text" id="sorteo-premio" required placeholder="Ej: RD$500">
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha y Hora del Sorteo</label>
+                        <input type="datetime-local" id="sorteo-fecha" required>
+                    </div>
+                    <div class="btn-group" style="margin-top: 20px;">
+                        <button type="submit" class="btn-solid-red btn-small">Guardar / Iniciar Sorteo</button>
+                        <button type="button" id="btn-pausar" class="btn-outline-red btn-small hidden">Pausar Sorteo</button>
+                        <button type="button" id="btn-finalizar" class="btn-outline-red btn-small hidden">Finalizar Manualmente</button>
+                    </div>
+                </form>
+                
+                <div id="admin-countdown" class="text-center" style="margin-top: 20px; font-size: 1.2rem; color: #ff9d00;"></div>
+            </div>
+
+            <!-- Seleccionar Ganador -->
+            <div class="admin-card">
+                <h3 class="medium-title" style="font-size: 1.5rem; margin-bottom: 20px;">Selector de Ganador</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 15px;">Elige un ganador al azar entre los participantes registrados en el sorteo actual.</p>
+                <button id="btn-elegir-ganador" class="btn-solid-red w-full">Elegir Ganador Aleatorio</button>
+                <div id="winner-result" class="winner-display hidden"></div>
+            </div>
+
+            <!-- Participantes -->
+            <div class="admin-card">
+                <div class="admin-nav" style="margin-bottom: 15px;">
+                    <h3 class="medium-title" style="font-size: 1.5rem; margin-bottom: 0;">Participantes (<span id="participantes-count">0</span>)</h3>
+                    <button id="btn-export-csv" class="btn-outline-red btn-small">Exportar CSV</button>
+                </div>
+                <div class="table-responsive">
+                    <table id="participantes-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Fecha Registro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Llenado dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
